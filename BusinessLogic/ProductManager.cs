@@ -12,29 +12,34 @@ namespace BusinessLogic
     {
         public void AddProduct(Product product)
         {
-            //Aplicar validaciónes
+            //Aplicar validaciones
             if (string.IsNullOrEmpty(product.Name))
             {
-                throw new Exception("Nombre del producto no debe ser vacio.");
-
+                throw new Exception("El nombre del producto no debe estar vacío.");
             }
-            if (product.Price < 1)
+            if (product.Price <= 0)
             {
-                throw new Exception("El precio debe ser mayor que cero");
+                throw new Exception("El precio del producto debe ser mayor que cero.");
             }
-            if(product.Stock < 1) 
+            if(product.Stock < 0) 
             {
-                throw new Exception("La cantidad disponible debe ser mator que cero");
+                throw new Exception("La cantidad disponible no debe ser negativa.");
             }
 
-            //Si pasa las validaciónes enviamos a guardar en el txt
+            //Si pasa las validaciones, lo enviamos a guardar en el txt
             var fm = new FileManager();
+
             fm.SaveProduct(product);
         }
         public List<Product> GetProducts()
         {
-            var List = new List<Product>();
-            return List;
-        }S
+            var listaProductos = new List<Product>();
+
+            var fm = new FileManager();
+
+            listaProductos = fm.ReadProducts();
+
+            return listaProductos;
+        }
     }
 }
